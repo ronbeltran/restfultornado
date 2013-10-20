@@ -1,6 +1,8 @@
 #!/usr/bin/env python
-import tornado.ioloop
+
+import os
 import tornado.web
+import tornado.wsgi
 
 
 class MainHandler(tornado.web.RequestHandler):
@@ -8,12 +10,12 @@ class MainHandler(tornado.web.RequestHandler):
         self.write("Hello, world")
 
 
-application = tornado.web.Application([
+settings = { 
+    "title": u"Restful Json Api",
+    "debug": os.environ.get('SERVER_SOFTWARE', '').startswith('Dev'),
+}
+
+
+application = tornado.wsgi.WSGIApplication([
     (r"/", MainHandler),
-])
-
-
-if __name__ == "__main__":
-    application.listen(8000)
-    tornado.ioloop.IOLoop.instance().start()
-
+], **settings)
