@@ -32,5 +32,5 @@ settings = {
 application = tornado.wsgi.WSGIApplication([
     (r"/", MainHandler),
     (r"/api/v1/events", EventApiHandler),
-    (r"/api/v1/events/([0-9]+)/(\w+)", EventApiSaveHandler),
+    (r"/api/v1/events/([0-9]+)/([\w-]+)", EventApiSaveHandler),
 ], **settings)
