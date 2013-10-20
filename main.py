@@ -6,11 +6,12 @@ import tornado.wsgi
 
 
 class MainHandler(tornado.web.RequestHandler):
+
     def get(self):
         self.write("Hello, world")
 
 
-settings = { 
+settings = {
     "title": u"Restful Json Api",
     "debug": os.environ.get('SERVER_SOFTWARE', '').startswith('Dev'),
 }
