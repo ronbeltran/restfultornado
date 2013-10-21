@@ -7,7 +7,7 @@ class User(db.Model):
     created = db.DateTimeProperty(auto_now_add=True)
 
 
-class Event(db.Modle):
+class Event(db.Model):
     user_id = db.ReferenceProperty(User)
     eventname = db.StringProperty(required=True)
     created = db.DateTimeProperty(auto_now_add=True)
