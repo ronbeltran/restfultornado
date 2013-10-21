@@ -5,6 +5,8 @@ import tornado.web
 import tornado.wsgi
 
 import models
+models.create_users()
+
 
 class MainHandler(tornado.web.RequestHandler):
 
