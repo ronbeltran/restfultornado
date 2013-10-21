@@ -8,7 +8,7 @@ class User(db.Model):
 
 
 class Event(db.Model):
-    user_id = db.ReferenceProperty(User)
+    user = db.ReferenceProperty(User)
     eventname = db.StringProperty(required=True)
     created = db.DateTimeProperty(auto_now_add=True)
 
