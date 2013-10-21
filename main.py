@@ -1,11 +1,17 @@
 #!/usr/bin/env python
 
+import logging
 import os
 import tornado.web
 import tornado.wsgi
 
+from google.appengine.ext import db
+
 import models
-models.create_users()
+
+# if no users found create users
+if db.Query(models.User).count() == 0:
+    models.create_users()
 
 
 class MainHandler(tornado.web.RequestHandler):
@@ -22,8 +28,13 @@ class EventApiHandler(tornado.web.RequestHandler):
 
 class EventApiSaveHandler(tornado.web.RequestHandler):
 
-    def post(self, uid, event):
-        raise tornado.web.HTTPError(403)
+    def post(self, user_id, eventname):
+        existing = db.Query(models.User).filter("id =", int(user_id)).get()
+        if existing is None:
+            raise tornado.web.HTTPError(404)
+        else:
+            event = models.Event(user=existing, eventname=eventname)
+            event.put()
 
 
 settings = {
@@ -35,5 +46,5 @@ settings = {
 application = tornado.wsgi.WSGIApplication([
     (r"/", MainHandler),
     (r"/api/v1/events", EventApiHandler),
-    (r"/api/v1/events/([0-9]+)/([\w-]+)", EventApiSaveHandler),
+    (r"/api/v1/events/([0-9]+)/([\w]+)", EventApiSaveHandler),
 ], **settings)
