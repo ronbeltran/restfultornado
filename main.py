@@ -9,9 +9,9 @@ from google.appengine.ext import db
 
 import models
 
-# if no users found create users
+# initialize users and events 
 if db.Query(models.User).count() == 0:
-    models.create_users()
+    models.initialize_db()
 
 
 class MainHandler(tornado.web.RequestHandler):

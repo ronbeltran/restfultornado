@@ -13,7 +13,7 @@ class Event(db.Model):
     created = db.DateTimeProperty(auto_now_add=True)
 
 
-def create_users():
+def initialize_db():
 
     buzz = User(id=1, username="buzz")
     buzz.put()
