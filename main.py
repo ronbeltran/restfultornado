@@ -4,6 +4,7 @@ import os
 import tornado.web
 import tornado.wsgi
 
+import models
 
 class MainHandler(tornado.web.RequestHandler):
 
