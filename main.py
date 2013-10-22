@@ -45,6 +45,7 @@ class EventApiSaveHandler(tornado.web.RequestHandler):
         else:
             event = models.Event(user=existing, name=eventname)
             event.put()
+            self.set_status(201)
 
 
 settings = {
