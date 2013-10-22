@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 
-import logging
 import os
 import tornado.web
 import tornado.wsgi
@@ -26,8 +25,15 @@ class MainHandler(tornado.web.RequestHandler):
 
 class EventApiHandler(tornado.web.RequestHandler):
 
-    def get(self):
-        raise tornado.web.HTTPError(403)
+    def get(self, user_id):
+        data = {}
+        user = models.User.all().filter("id =",int(user_id)).get()
+        if not user:
+            raise tornado.web.HTTPError(404)
+
+        data["user_id"] = int(user.id)
+        data["event"] = user.event_set.count()
+        self.write(tornado.escape.json_encode(data))
 
 
 class EventApiSaveHandler(tornado.web.RequestHandler):
@@ -49,6 +55,6 @@ settings = {
 
 application = tornado.wsgi.WSGIApplication([
     (r"/", MainHandler),
-    (r"/api/v1/events", EventApiHandler),
+    (r"/api/v1/events/([0-9]+)", EventApiHandler),
     (r"/api/v1/events/([0-9]+)/([\w]+)", EventApiSaveHandler),
 ], **settings)
