@@ -20,11 +20,11 @@ class TestCase(unittest.TestCase):
 
     def test_events_post(self):
         i = requests.post("http://localhost:8080/api/v1/events/1/event1")
-        assert i.status_code == 200
+        assert i.status_code == 201
 
-    def test_events_post_not_found(self):
+    def test_events_post_bad_request(self):
         i = requests.post("http://localhost:8080/api/v1/events/100/event2")
-        assert i.status_code == 404
+        assert i.status_code == 400
 
 
 if __name__=="__main__":
