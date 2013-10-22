@@ -11,8 +11,12 @@ class TestCase(unittest.TestCase):
         assert i.status_code == 200
 
     def test_events_get(self):
-        i = requests.get("http://localhost:8080/api/v1/events")
-        assert i.status_code == 403
+        i = requests.get("http://localhost:8080/api/v1/events/1")
+        assert i.status_code == 200
+
+    def test_events_get_not_found(self):
+        i = requests.get("http://localhost:8080/api/v1/events/100")
+        assert i.status_code == 404
 
     def test_events_post(self):
         i = requests.post("http://localhost:8080/api/v1/events/1/event1")
