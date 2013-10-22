@@ -32,7 +32,7 @@ class EventApiHandler(tornado.web.RequestHandler):
             raise tornado.web.HTTPError(404)
 
         data["user_id"] = int(user.id)
-        data["event"] = user.event_set.count()
+        data["event"] = user.user_events.count()
         self.write(tornado.escape.json_encode(data))
 
 
@@ -43,7 +43,7 @@ class EventApiSaveHandler(tornado.web.RequestHandler):
         if not existing:
             raise tornado.web.HTTPError(404)
         else:
-            event = models.Event(user=existing, eventname=eventname)
+            event = models.Event(user=existing, name=eventname)
             event.put()
 
 
