@@ -41,7 +41,7 @@ class EventApiSaveHandler(tornado.web.RequestHandler):
     def post(self, user_id, eventname):
         existing = models.User.all().filter("id =", int(user_id)).get()
         if not existing:
-            raise tornado.web.HTTPError(404)
+            raise tornado.web.HTTPError(400)
         else:
             event = models.Event(user=existing, name=eventname)
             event.put()
