@@ -10,7 +10,7 @@ class User(db.Model):
     def to_dict(self):
         return dict(id=int(self.id),
                     username=str(self.username),
-                    created=str(self.created))
+                    created=str(self.created.isoformat()))
 
 
 class Event(db.Model):
@@ -21,7 +21,7 @@ class Event(db.Model):
     def to_dict(self):
         return dict(user_id=int(self.user.id),
                     eventname=str(self.eventname),
-                    created=str(self.created))
+                    created=str(self.created.isoformat()))
 
 
 def initialize_db():
