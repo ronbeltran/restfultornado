@@ -1,5 +1,4 @@
 from google.appengine.ext import db
-from tornado.escape import json_encode
 
 
 class User(db.Model):
