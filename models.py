@@ -18,6 +18,11 @@ class Event(db.Model):
     eventname = db.StringProperty(required=True)
     created = db.DateTimeProperty(auto_now_add=True)
 
+    def to_dict(self):
+        return dict(user_id=int(self.user.id),
+                    eventname=str(self.eventname),
+                    created=str(self.created))
+
 
 def initialize_db():
 
