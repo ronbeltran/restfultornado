@@ -9,7 +9,7 @@ from google.appengine.ext import db
 import models
 
 # initialize users and events 
-if db.Query(models.User).count() == 0:
+if models.User.all().count() == 0:
     models.initialize_db()
 
 
@@ -39,7 +39,7 @@ class EventApiHandler(tornado.web.RequestHandler):
 class EventApiSaveHandler(tornado.web.RequestHandler):
 
     def post(self, user_id, eventname):
-        existing = db.Query(models.User).filter("id =", int(user_id)).get()
+        existing = models.User.all().filter("id =", int(user_id)).get()
         if not existing:
             raise tornado.web.HTTPError(404)
         else:
