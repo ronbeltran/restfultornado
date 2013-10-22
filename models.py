@@ -11,8 +11,6 @@ class User(db.Model):
         return dict(id=int(self.id),
                     username=str(self.username),
                     created=str(self.created))
-    def to_json(self):
-        return json_encode(self.to_dict())
 
 
 class Event(db.Model):
