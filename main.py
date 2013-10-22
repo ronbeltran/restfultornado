@@ -17,7 +17,8 @@ if db.Query(models.User).count() == 0:
 class MainHandler(tornado.web.RequestHandler):
 
     def get(self):
-        self.write("Hello, world")
+        users = {"users": [u.to_dict() for u in models.User.all()]}
+        self.write(tornado.escape.json_encode(users))
 
 
 class EventApiHandler(tornado.web.RequestHandler):
