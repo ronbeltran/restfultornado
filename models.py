@@ -1,10 +1,18 @@
 from google.appengine.ext import db
+from tornado.escape import json_encode
 
 
 class User(db.Model):
     id = db.IntegerProperty(required=True)
     username = db.StringProperty(required=True)
     created = db.DateTimeProperty(auto_now_add=True)
+
+    def to_dict(self):
+        return dict(id=int(self.id),
+                    username=str(self.username),
+                    created=str(self.created))
+    def to_json(self):
+        return json_encode(self.to_dict())
 
 
 class Event(db.Model):
