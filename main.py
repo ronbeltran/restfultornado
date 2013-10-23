@@ -23,7 +23,7 @@ class MainHandler(tornado.web.RequestHandler):
             "users": [u.to_dict() for u in models.User.all()],
             "events": [v.to_dict() for v in models.Event.all()],
         }
-        self.write(tornado.escape.json_encode(data))
+        self.write(utils.json_encode(data))
 
 
 class EventApiHandler(tornado.web.RequestHandler):
@@ -52,9 +52,10 @@ class EventApiHandler(tornado.web.RequestHandler):
         events_list = filter(lambda x: x.created > last_x_time, [event for event in user.user_events] )
 
         data = {}
+        data["description"] = "All events for <User %s> for the last %s %s" % (user_id, time, delta)
         data["events"] = [event.to_dict() for event in events_list] 
 
-        self.write(tornado.escape.json_encode(data))
+        self.write(utils.json_encode(data))
 
 
 class EventApiSaveHandler(tornado.web.RequestHandler):

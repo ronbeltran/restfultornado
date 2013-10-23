@@ -1,3 +1,4 @@
+import json
 from datetime import datetime, timedelta
 
 def timedelta_wrapper(time, delta=0):
@@ -31,3 +32,17 @@ def timedelta_wrapper(time, delta=0):
     else:
         pass
     return ret_val
+
+
+def json_encode(value):
+    """JSON-encodes the given Python object.
+    Simple workaround to pretty-print json response. Copied from tornado.escape.json_encode
+    """
+    # JSON permits but does not require forward slashes to be escaped.
+    # This is useful when json data is emitted in a <script> tag
+    # in HTML, as it prevents </script> tags from prematurely terminating
+    # the javscript.  Some json libraries do this escaping by default,
+    # although python's standard library does not, so we do it here.
+    # http://stackoverflow.com/questions/1580647/json-why-are-forward-slashes-escaped
+    return json.dumps(value, sort_keys=True, indent=4).replace("</", "<\\/")
+
