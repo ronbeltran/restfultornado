@@ -1,12 +1,15 @@
 #!/usr/bin/env python
 
 import os
+from datetime import datetime, timedelta
+
 import tornado.web
 import tornado.wsgi
 
 from google.appengine.ext import db
 
 import models
+import utils
 
 # initialize users and events 
 if models.User.all().count() == 0:
@@ -34,18 +37,23 @@ class EventApiHandler(tornado.web.RequestHandler):
         - Per Per Month
         """
 
-        filter_by = self.get_argument("filter_by", None)
-        timedelta = self.get_argument("timedelta", None)
-
-        data = {}
         user = models.User.all().filter("id =",int(user_id)).get()
+
         if not user:
             raise tornado.web.HTTPError(404)
 
-        data["user_id"] = int(user.id)
-        data["event"] = user.user_events.count()
-        data["filter_by"] = str(filter_by)
-        data["timedelta"] = str(timedelta)
+        time = self.get_argument("time", None)
+        delta = self.get_argument("delta", 0)
+
+        # get last x hours, days, weeks, months
+        last_x_time = utils.timedelta_wrapper(time, int(delta))
+
+        # get events from the last x time
+        events_list = filter(lambda x: x.created > last_x_time, [event for event in user.user_events] )
+
+        data = {}
+        data["events"] = [event.to_dict() for event in events_list] 
+
         self.write(tornado.escape.json_encode(data))
 
 
