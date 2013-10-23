@@ -26,6 +26,17 @@ class MainHandler(tornado.web.RequestHandler):
 class EventApiHandler(tornado.web.RequestHandler):
 
     def get(self, user_id):
+        """
+        Return the number of events of a user per below requirements:
+        - Per Hour
+        - Per Day 
+        - Per 7 Days or 1 Week 
+        - Per Per Month
+        """
+
+        filter_by = self.get_argument("filter_by", None)
+        timedelta = self.get_argument("timedelta", None)
+
         data = {}
         user = models.User.all().filter("id =",int(user_id)).get()
         if not user:
@@ -33,6 +44,8 @@ class EventApiHandler(tornado.web.RequestHandler):
 
         data["user_id"] = int(user.id)
         data["event"] = user.user_events.count()
+        data["filter_by"] = str(filter_by)
+        data["timedelta"] = str(timedelta)
         self.write(tornado.escape.json_encode(data))
 
 
