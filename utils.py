@@ -18,6 +18,8 @@ def timedelta_wrapper(time, delta=0):
     ret_val = None
     delta = int(delta)
 
+    if time == "minutes":
+        ret_val = now - timedelta(minutes=delta)
     if time == "hours":
         ret_val = now - timedelta(hours=delta)
     elif time == "days":
