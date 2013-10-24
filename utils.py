@@ -46,3 +46,23 @@ def json_encode(value):
     # http://stackoverflow.com/questions/1580647/json-why-are-forward-slashes-escaped
     return json.dumps(value, sort_keys=True, indent=4).replace("</", "<\\/")
 
+
+def filter_by(time=None, events_list=[], epoch=None):
+    """ Filter event list by minutes, hours, days, months"""
+    list_of_list = []
+    group_list = []
+
+    increment = 1
+    between = None 
+
+    while epoch <= datetime.now():
+
+        if time == 'days':
+            group_list = filter(lambda x: x.created >= epoch and x.created <= (epoch + timedelta(days=increment)), [e for e in events_list])
+            list_of_list.append(
+                [d.to_dict() for d in group_list]
+            ) 
+            epoch += timedelta(days=increment) 
+            increment+=1
+
+    return list_of_list
