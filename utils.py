@@ -5,7 +5,7 @@ def timedelta_wrapper(time, delta=0):
     """ This method is a wrapper for built in method timedelta() 
     since we don't know what the request argument time period.
     Arguments:    
-    time is any of the following (hours, days, weeks, months) 
+    time is any of the following (minutes, hours, days, weeks) 
     delta is any value supplied to timedelta() eg. timedelta(hours=3)
     """
     # check if time period is None
@@ -42,8 +42,14 @@ def json_encode(value):
     return json.dumps(value, sort_keys=True, indent=4).replace("</", "<\\/")
 
 
+def make_dict(date, event, count):
+    return dict(date=str(date),
+                event=str(event),
+                count=str(count))
+   
+
 def filter_by(time=None, events_list=[], epoch=None):
-    """ Filter event list by minutes, hours, days, months"""
+    """ Filter event list by minutes, hours, days, weeks"""
     list_of_list = []
     group_list = []
 
@@ -58,12 +64,8 @@ def filter_by(time=None, events_list=[], epoch=None):
             events_name = filter(lambda x: x, [x.to_dict()["name"] for x in group_list])
             for i in set(events_name):
                 list_of_list.append(
-                    {
-                      "date":str(epoch.strftime("%A, %d. %B %Y %I:%M%p")),
-                      "event":i, 
-                      "count":events_name.count(i)
-                    }
-                ) 
+                    make_dict( str(epoch.strftime("%A, %d. %B %Y %I:%M%p")), i, events_name.count(i))
+                )
             epoch += timedelta_wrapper(time, delta=increment) 
             increment += 1
 
