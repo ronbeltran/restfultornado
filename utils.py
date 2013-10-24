@@ -60,8 +60,7 @@ def filter_by(time=None, events_list=[], epoch=None):
             group_list = filter(lambda x: x.created >= epoch and x.created <= (epoch + timedelta(days=increment)), [e for e in events_list])
             # get the list of event values
             events_name = filter(lambda x: x, [x.to_dict()["name"] for x in group_list])
-            events = set(events_name)
-            for i in events:
+            for i in set(events_name):
                 list_of_list.append(
                     {
                       "date":str(epoch.strftime("%A, %d. %B %Y %I:%M%p")),
