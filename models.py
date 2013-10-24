@@ -1,3 +1,4 @@
+from datetime import datetime, timedelta
 from google.appengine.ext import db
 
 
@@ -23,100 +24,81 @@ class Event(db.Model):
 
 def initialize_db():
 
+    one_month_ago = datetime.now() - timedelta(weeks=4)
+    two_month_ago = datetime.now() - timedelta(weeks=8)
+
+    one_week_ago = datetime.now() - timedelta(weeks=1)
+    two_week_ago = datetime.now() - timedelta(weeks=2)
+    three_week_ago = datetime.now() - timedelta(weeks=3)
+
+    one_day_ago = datetime.now() - timedelta(days=1)
+    two_day_ago = datetime.now() - timedelta(days=2)
+    three_day_ago = datetime.now() - timedelta(days=3)
+    four_day_ago = datetime.now() - timedelta(days=4)
+    five_day_ago = datetime.now() - timedelta(days=5)
+    six_day_ago = datetime.now() - timedelta(days=6)
+
+    one_minute_ago = datetime.now() - timedelta(minutes=1)
+    two_minute_ago = datetime.now() - timedelta(minutes=2)
+    five_minute_ago = datetime.now() - timedelta(minutes=5)
+    ten_minute_ago = datetime.now() - timedelta(minutes=10)
+    fifteen_minute_ago = datetime.now() - timedelta(minutes=15)
+    thirty_minute_ago = datetime.now() - timedelta(minutes=30)
+
     # For buzz
     buzz = User(id=1)
     buzz.put()
 
-    e1 = Event(user=buzz, name="e1")
+    e1 = Event(user=buzz, name="e1", created=one_day_ago)
     e1.put()
 
-    e2 = Event(user=buzz, name="e2")
-    e2.put()
-
-    e3 = Event(user=buzz, name="e3")
-    e3.put()
-
-    e4 = Event(user=buzz, name="e4")
-    e4.put()
-
-    e5 = Event(user=buzz, name="e5")
-    e5.put()
-
-    e6 = Event(user=buzz, name="e5")
-    e6.put()
-
-    # For woody
-    woody = User(id=2)
-    woody.put()
-
-    e6 = Event(user=woody, name="e1")
-    e6.put()
-
-    e7 = Event(user=woody, name="e2")
-    e7.put()
-
-    e8 = Event(user=woody, name="e3")
-    e8.put()
-
-    e9 = Event(user=woody, name="e4")
-    e9.put()
-
-    e10 = Event(user=woody, name="e5")
-    e10.put()
-
-    # For lenny
-    lenny = User(id=3)
-    lenny.put()
-
-    e11 = Event(user=lenny, name="e1")
+    e11 = Event(user=buzz, name="e1", created=one_day_ago)
     e11.put()
 
-    e12 = Event(user=lenny, name="e2")
-    e12.put()
+    e111 = Event(user=buzz, name="e1", created=one_day_ago)
+    e111.put()
 
-    e13 = Event(user=lenny, name="e3")
-    e13.put()
+    e2 = Event(user=buzz, name="e2", created=one_day_ago)
+    e2.put()
 
-    e14 = Event(user=lenny, name="e4")
-    e14.put()
-
-    e15 = Event(user=lenny, name="e5")
-    e15.put()
-
-    # For squeeze
-    squeeze = User(id=4)
-    squeeze.put()
-
-    e16 = Event(user=squeeze, name="e1")
-    e16.put()
-
-    e17 = Event(user=squeeze, name="e2")
-    e17.put()
-
-    e18 = Event(user=squeeze, name="e3")
-    e18.put()
-
-    e19 = Event(user=squeeze, name="e4")
-    e19.put()
-
-    e20 = Event(user=squeeze, name="e5")
-    e20.put()
-
-    # For wheezy
-    wheezy = User(id=5)
-    wheezy.put()
-
-    e21 = Event(user=wheezy, name="e1")
-    e21.put()
-
-    e22 = Event(user=wheezy, name="e2")
+    e22 = Event(user=buzz, name="e2", created=one_day_ago)
     e22.put()
 
-    e23 = Event(user=wheezy, name="e3")
-    e23.put()
+    e222 = Event(user=buzz, name="e2", created=one_day_ago)
+    e222.put()
 
-    e24 = Event(user=wheezy, name="e4")
-    e24.put()
+    e3 = Event(user=buzz, name="e3", created=two_day_ago)
+    e3.put()
 
-    e25 = Event(user=wheezy, name="e5")
-    e25.put()
+    e33 = Event(user=buzz, name="e3", created=two_day_ago)
+    e33.put()
+
+    e333 = Event(user=buzz, name="e3", created=two_day_ago)
+    e333.put()
+
+    e4 = Event(user=buzz, name="e4", created=two_day_ago)
+    e4.put()
+
+    e44 = Event(user=buzz, name="e4", created=two_day_ago)
+    e44.put()
+
+    e444 = Event(user=buzz, name="e4", created=two_day_ago)
+    e444.put()
+
+    e5 = Event(user=buzz, name="e5", created=three_day_ago)
+    e5.put()
+
+    e55 = Event(user=buzz, name="e5", created=three_day_ago)
+    e55.put()
+
+    e555 = Event(user=buzz, name="e5", created=three_day_ago)
+    e555.put()
+
+    e6 = Event(user=buzz, name="e6", created=three_day_ago)
+    e6.put()
+
+    e66 = Event(user=buzz, name="e6", created=three_day_ago)
+    e66.put()
+
+    e666 = Event(user=buzz, name="e6", created=three_day_ago)
+    e666.put()
