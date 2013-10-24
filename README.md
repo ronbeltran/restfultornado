@@ -14,6 +14,6 @@ Application is deployed on http://restfultornado.appspot.com/
     POST   /api/v1/events/<id>/<event> - Store event to user identified by user <id>
     GET   /api/v1/events/<id>?time=<time>&delta=<delta> - Returns list of user's events from last X time
 
-  where:
-      <time> in ['minutes','hours','days','weeks']
-      <delta> is any int
+where:
+- <time> in ['minutes','hours','days','weeks']
+- <delta> is any int
