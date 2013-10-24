@@ -62,10 +62,9 @@ def filter_by(time=None, events_list=[], epoch=None):
             group_list = filter(lambda x: x.created >= epoch and x.created <= (epoch + timedelta_wrapper(time, delta=increment)), [e for e in events_list])
             # get the list of event values
             events_name = filter(lambda x: x, [x.to_dict()["name"] for x in group_list])
-            for i in set(events_name):
-                list_of_list.append(
-                    make_dict( str(epoch.strftime("%A, %d. %B %Y %I:%M%p")), i, events_name.count(i))
-                )
+            # no event list on that time frame
+            if len(group_list)>0:
+                list_of_list.append ([ make_dict( str(epoch.strftime("%A, %d. %B %Y")), i, events_name.count(i)) for i in set(events_name) ])
             epoch += timedelta_wrapper(time, delta=increment) 
             increment += 1
 
