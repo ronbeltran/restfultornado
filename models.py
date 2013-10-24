@@ -102,3 +102,16 @@ def initialize_db():
 
     e666 = Event(user=buzz, name="e6", created=three_day_ago)
     e666.put()
+
+    # For woody 
+    woody = User(id=2)
+    woody.put()
+
+    e10 = Event(user=woody, name="e1", created=one_day_ago)
+    e10.put()
+
+    e100 = Event(user=woody, name="e1", created=one_day_ago)
+    e100.put()
+
+    e1000 = Event(user=woody, name="e2", created=one_day_ago)
+    e1000.put()
