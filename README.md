@@ -15,5 +15,7 @@ Application is deployed on http://restfultornado.appspot.com/
     GET   /api/v1/events/<id>?time=<time>&delta=<delta> - Returns list of user's events from last X time
 
 where:
-- <time> in ['minutes','hours','days','weeks']
-- <delta> is any int
+- time in ['minutes','hours','days','weeks']
+- delta is any int.
+
+Initial data is included in models.py for testing/viewing.
