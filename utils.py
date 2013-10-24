@@ -53,16 +53,23 @@ def filter_by(time=None, events_list=[], epoch=None):
     group_list = []
 
     increment = 1
-    between = None 
 
     while epoch <= datetime.now():
 
         if time == 'days':
             group_list = filter(lambda x: x.created >= epoch and x.created <= (epoch + timedelta(days=increment)), [e for e in events_list])
-            list_of_list.append(
-                [d.to_dict() for d in group_list]
-            ) 
+            # get the list of event values
+            events_name = filter(lambda x: x, [x.to_dict()["name"] for x in group_list])
+            events = set(events_name)
+            for i in events:
+                list_of_list.append(
+                    {
+                      "date":str(epoch.strftime("%A, %d. %B %Y %I:%M%p")),
+                      "event":i, 
+                      "count":events_name.count(i)
+                    }
+                ) 
             epoch += timedelta(days=increment) 
-            increment+=1
+            increment += 1
 
     return list_of_list
