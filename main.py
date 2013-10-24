@@ -19,6 +19,8 @@ if models.User.all().count() == 0:
 class MainHandler(tornado.web.RequestHandler):
 
     def get(self):
+        """ Show list of users
+        """
         data = {
             "users": [u.to_dict() for u in models.User.all()],
         }
@@ -62,13 +64,11 @@ class EventApiHandler(tornado.web.RequestHandler):
             }
             count_list.append(item)
 
-#        if not time:
+        if not time:
             # show all events for user
-#            data["events"] = [u.to_dict() for u in user.user_events]
-#        else:
-            # show all events for the last x time
-#            data["events"] = count_list
-        data["grouping"] = utils.filter_by(time, events_from_last_x_time, last_x_time)
+            data["events"] = [u.to_dict() for u in user.user_events]
+        else:
+            data["grouping"] = utils.filter_by(time, events_from_last_x_time, last_x_time)
 
         self.write(utils.json_encode(data))
 
