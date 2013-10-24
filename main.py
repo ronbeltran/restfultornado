@@ -52,17 +52,8 @@ class EventApiHandler(tornado.web.RequestHandler):
         # get events from the last x time
         events_from_last_x_time = filter(lambda x: x.created >= last_x_time, [event for event in user.user_events] )
 
-        count_list = []
         data = {}
         data["description"] = "All Events for User %s for the last %s %s" % (str(user_id), str(delta), str(time))
-
-        for i in events_from_last_x_time:
-            item = {
-                "Event":i.name,
-                "Count":"",
-                "Created":i.created.strftime("%b %d %Y %I:%M%p %Z"),
-            }
-            count_list.append(item)
 
         if not time:
             # show all events for user
