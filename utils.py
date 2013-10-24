@@ -1,7 +1,7 @@
 import json
 from datetime import datetime, timedelta
 
-def timedelta_wrapper(time, delta=0, now=datetime.now()):
+def timedelta_wrapper(time, delta=0):
     """ This method is a wrapper for built in method timedelta() 
     since we don't know what the request argument time period.
     Arguments:    
@@ -15,22 +15,18 @@ def timedelta_wrapper(time, delta=0, now=datetime.now()):
     else:
         time = time.lower()
 
-    ret_val = None
     delta = int(delta)
 
     if time == "minutes":
-        ret_val = now - timedelta(minutes=delta)
+        return timedelta(minutes=delta)
     if time == "hours":
-        ret_val = now - timedelta(hours=delta)
+        return timedelta(hours=delta)
     elif time == "days":
-        ret_val = now - timedelta(days=delta)
+        return timedelta(days=delta)
     elif time == "weeks":
-        ret_val = now - timedelta(weeks=delta)
-    elif time == "months":
-        ret_val = now - timedelta(months=delta)
+        return timedelta(weeks=delta)
     else:
-        pass
-    return ret_val
+        return None
 
 
 def json_encode(value):
@@ -52,11 +48,12 @@ def filter_by(time=None, events_list=[], epoch=None):
     group_list = []
 
     increment = 1
+    now = datetime.now()
 
-    while epoch <= datetime.now():
+    while epoch <= now:
 
-        if time == 'days':
-            group_list = filter(lambda x: x.created >= epoch and x.created <= (epoch + timedelta(days=increment)), [e for e in events_list])
+        if time in ['minutes','hours','days','weeks']:
+            group_list = filter(lambda x: x.created >= epoch and x.created <= (epoch + timedelta_wrapper(time, delta=increment)), [e for e in events_list])
             # get the list of event values
             events_name = filter(lambda x: x, [x.to_dict()["name"] for x in group_list])
             for i in set(events_name):
@@ -67,7 +64,7 @@ def filter_by(time=None, events_list=[], epoch=None):
                       "count":events_name.count(i)
                     }
                 ) 
-            epoch += timedelta(days=increment) 
+            epoch += timedelta_wrapper(time, delta=increment) 
             increment += 1
 
     return list_of_list

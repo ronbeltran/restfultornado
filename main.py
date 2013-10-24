@@ -47,7 +47,7 @@ class EventApiHandler(tornado.web.RequestHandler):
         delta = self.get_argument("delta", 0)
 
         # get last x hours, days, weeks, months
-        last_x_time = utils.timedelta_wrapper(time, int(delta))
+        last_x_time = datetime.now() - utils.timedelta_wrapper(time, int(delta))
 
         # get events from the last x time
         events_from_last_x_time = filter(lambda x: x.created >= last_x_time, [event for event in user.user_events] )
