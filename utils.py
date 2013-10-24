@@ -65,6 +65,7 @@ def filter_by(time=None, events_list=[], epoch=None):
             # no event list on that time frame
             if len(group_list)>0:
                 list_of_list.append ([ make_dict( str(epoch.strftime("%A, %d. %B %Y")), i, events_name.count(i)) for i in set(events_name) ])
+            # todo: if time == 'weeks', make the increment by 1 day not 1 week.
             epoch += timedelta_wrapper(time, delta=increment) 
             increment += 1
 
