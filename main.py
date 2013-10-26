@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import os
+import random
 from datetime import datetime, timedelta
 
 import tornado.web
@@ -15,6 +16,7 @@ import utils
 if models.User.all().count() == 0:
     models.initialize_db()
 
+MAX_NUMBER_OF_EVENTS = 100000
 
 class MainHandler(tornado.web.RequestHandler):
 
@@ -80,6 +82,21 @@ class EventApiSaveHandler(tornado.web.RequestHandler):
 
 class GenerateRandomEventsHandler(tornado.web.RequestHandler):
 
+    def get(self):
+        """Batch delete."""
+
+        count = int( models.Event.all().count() );
+
+        # check if there is something to delete
+        if count > 0:
+            db.delete([item for item in models.Event.all()])
+
+        if models.Event.all().count() == 0:
+            self.write( utils.json_encode({'message':'All events succesfully deleted.'}) )
+        else:
+            self.write( utils.json_encode({'message':'Delete failed. Try again.'}) )
+
+
     def post(self):
         """ 
         Generate randmomized events for a user.
@@ -94,7 +111,35 @@ class GenerateRandomEventsHandler(tornado.web.RequestHandler):
             delta : int
                 Delta is any int value for datetime.timedelta() eg. datetime.timedelta(days=7)
         """ 
-        return self.set_status(201)
+        time = self.get_argument("time", None)
+        delta = self.get_argument("delta", 0)
+        num_of_events = self.get_argument("num_of_events", 0)
+        user_id = self.get_argument("user_id", 0)
+
+        time = str(time) if time in ['minutes','hours','days','weeks'] else None
+
+        if not time:
+            raise tornado.web.HTTPError(404)
+
+        user = models.User.all().filter("id =",int(user_id)).get()
+
+        if not user:
+            raise tornado.web.HTTPError(404)
+
+
+        if int(num_of_events) > MAX_NUMBER_OF_EVENTS:
+            num_of_events = MAX_NUMBER_OF_EVENTS 
+
+        now = datetime.now()
+
+        for i in xrange(1,int(num_of_events)+1):
+            r = random.randrange(1,int(delta))
+            e = models.Event(user=user, 
+                             name='Event'+str(r), 
+                             created=now - utils.timedelta_wrapper(time, int(r)) )
+            e.put()
+
+        return self.write( str(models.Event.all().count()) )
 
 
 settings = {
