@@ -27,8 +27,9 @@ class TestCase(unittest.TestCase):
         assert i.status_code == 400
 
     def test_events_randomize(self):
-        i = requests.post("http://localhost:8080/api/v1/events/randomize")
-        assert i.status_code == 201
+        data={'user_id':1, 'num_of_events':100, 'time':'days', 'delta':7}
+        i = requests.post("http://localhost:8080/api/v1/events/randomize?user_id=1&num_of_events=5000&time=days&delta=7", params=data)
+        assert i.status_code == 200
 
 
 if __name__=="__main__":
