@@ -2,6 +2,8 @@
 
 import os
 import random
+import time as timer
+
 from datetime import datetime, timedelta
 
 import tornado.web
@@ -23,8 +25,10 @@ class MainHandler(tornado.web.RequestHandler):
     def get(self):
         """ Show list of users
         """
+        start = timer.time()
         data = {
             "users": [u.to_dict() for u in models.User.all()],
+            "load_time": timer.time() - start
         }
         self.write(utils.json_encode(data))
 
@@ -41,6 +45,7 @@ class EventApiHandler(tornado.web.RequestHandler):
         If no valid time query argument is provided, it show the user events count. 
         """
 
+        start = timer.time()
         user = models.User.all().filter("id =",int(user_id)).get()
 
         if not user:
@@ -60,9 +65,11 @@ class EventApiHandler(tornado.web.RequestHandler):
         if not time:
             # show all events for user
             data["description"] = "Number of events for User %s" % (str(user_id))
+            data["load_time"] = timer.time() - start
             data["events"] = user.user_events.count()
         else:
             data["description"] = "Number of events for User %s for the last %s %s" % (str(user_id), str(delta), str(time))
+            data["load_time"] = timer.time() - start
             data["grouping"] = utils.filter_by(time, events_from_last_x_time, last_x_time)
 
         self.write(utils.json_encode(data))
@@ -85,6 +92,7 @@ class GenerateRandomEventsHandler(tornado.web.RequestHandler):
     def get(self):
         """Batch delete."""
 
+        start = timer.time()
         count = int( models.Event.all().count() );
 
         # check if there is something to delete
@@ -92,9 +100,15 @@ class GenerateRandomEventsHandler(tornado.web.RequestHandler):
             db.delete([item for item in models.Event.all()])
 
         if models.Event.all().count() == 0:
-            self.write( utils.json_encode({'message':'All events succesfully deleted.'}) )
+            self.write( utils.json_encode({
+                                          'message':'All events succesfully deleted.',
+                                          'load_time': timer.time() - start
+                                          }) )
         else:
-            self.write( utils.json_encode({'message':'Delete failed. Try again.'}) )
+            self.write( utils.json_encode({
+                                          'message':'Delete failed. Try again.',
+                                          'load_time': timer.time() - start
+                                          }) )
 
 
     def post(self):
@@ -111,6 +125,7 @@ class GenerateRandomEventsHandler(tornado.web.RequestHandler):
             delta : int
                 Delta is any int value for datetime.timedelta() eg. datetime.timedelta(days=7)
         """ 
+        start = timer.time()
         time = self.get_argument("time", None)
         delta = self.get_argument("delta", 0)
         num_of_events = self.get_argument("num_of_events", 0)
@@ -139,7 +154,11 @@ class GenerateRandomEventsHandler(tornado.web.RequestHandler):
                              created=now - utils.timedelta_wrapper(time, int(r)) )
             e.put()
 
-        return self.write( str(models.Event.all().count()) )
+        d = {}
+        d["load_time"] = timer.time() - start 
+        d["count"] = models.Event.all().count() 
+
+        return self.write(utils.json_encode(d))
 
 
 settings = {
