@@ -26,6 +26,10 @@ class TestCase(unittest.TestCase):
         i = requests.post("http://localhost:8080/api/v1/events/100/event2")
         assert i.status_code == 400
 
+    def test_events_randomize(self):
+        i = requests.post("http://localhost:8080/api/v1/events/randomize")
+        assert i.status_code == 201
+
 
 if __name__=="__main__":
     unittest.main()
