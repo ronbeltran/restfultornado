@@ -16,7 +16,7 @@ import utils
 if models.User.all().count() == 0:
     models.initialize_db()
 
-MAX_NUMBER_OF_EVENTS = 100000
+MAX_NUMBER_OF_EVENTS = 500
 
 class MainHandler(tornado.web.RequestHandler):
 
