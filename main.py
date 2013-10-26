@@ -36,6 +36,7 @@ class EventApiHandler(tornado.web.RequestHandler):
         - Per Day 
         - Per 7 Days or 1 Week 
         - Per Per Month
+        If no valid time query argument is provided, it show the user events count. 
         """
 
         user = models.User.all().filter("id =",int(user_id)).get()
