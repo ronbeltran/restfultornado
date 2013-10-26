@@ -53,12 +53,13 @@ class EventApiHandler(tornado.web.RequestHandler):
         events_from_last_x_time = filter(lambda x: x.created >= last_x_time, [event for event in user.user_events] )
 
         data = {}
-        data["description"] = "All Events for User %s for the last %s %s" % (str(user_id), str(delta), str(time))
 
         if not time:
             # show all events for user
-            data["events"] = [u.to_dict() for u in user.user_events]
+            data["description"] = "Number of events for User %s" % (str(user_id))
+            data["events"] = user.user_events.count()
         else:
+            data["description"] = "Number of events for User %s for the last %s %s" % (str(user_id), str(delta), str(time))
             data["grouping"] = utils.filter_by(time, events_from_last_x_time, last_x_time)
 
         self.write(utils.json_encode(data))
