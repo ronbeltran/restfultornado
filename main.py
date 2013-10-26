@@ -78,6 +78,25 @@ class EventApiSaveHandler(tornado.web.RequestHandler):
             self.set_status(201)
 
 
+class GenerateRandomEventsHandler(tornado.web.RequestHandler):
+
+    def post(self):
+        """ 
+        Generate randmomized events for a user.
+
+        :Arguments:
+            user_id : int
+                User id
+            num_of_events : int
+                Number of events to generate, max of 100,000 per request
+            time : str
+                Time represents ``minutes``, ``days``, ``hours``, ``weeks`` in datetime.timedelta() eg. datetime.timedelta(days=7)
+            delta : int
+                Delta is any int value for datetime.timedelta() eg. datetime.timedelta(days=7)
+        """ 
+        return self.set_status(201)
+
+
 settings = {
     "title": u"Restful Json Api",
     "debug": os.environ.get('SERVER_SOFTWARE', '').startswith('Dev'),
@@ -86,6 +105,7 @@ settings = {
 
 application = tornado.wsgi.WSGIApplication([
     (r"/", MainHandler),
+    (r"/api/v1/events/randomize", GenerateRandomEventsHandler),
     (r"/api/v1/events/([0-9]+)", EventApiHandler),
     (r"/api/v1/events/([0-9]+)/([\w]+)", EventApiSaveHandler),
 ], **settings)
