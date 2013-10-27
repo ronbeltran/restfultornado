@@ -20,6 +20,7 @@ if models.User.all().count() == 0:
 
 MAX_NUMBER_OF_EVENTS = 500
 
+
 class MainHandler(tornado.web.RequestHandler):
 
     def get(self):
@@ -37,12 +38,17 @@ class EventApiHandler(tornado.web.RequestHandler):
 
     def get(self, user_id):
         """
-        Return the number of events of a user per below requirements:
-        - Per Hour
-        - Per Day 
-        - Per 7 Days or 1 Week 
-        - Per Per Month
-        If no valid time query argument is provided, it show the user events count. 
+        Return the number of events of a user.
+
+        :Arguments:
+            user_id : int
+                User id
+            time : str
+                Time represents ``minutes``, ``days``, ``hours``, ``weeks`` in datetime.timedelta() eg. datetime.timedelta(days=7)
+            delta : int
+                Delta is any int value for datetime.timedelta() eg. datetime.timedelta(days=7)
+
+        If no valid time query argument is provided, it will show the user events count. 
         """
 
         start = timer.time()
@@ -78,6 +84,16 @@ class EventApiHandler(tornado.web.RequestHandler):
 class EventApiSaveHandler(tornado.web.RequestHandler):
 
     def post(self, user_id, eventname):
+        """
+        Store the event and associate it to a user identified by user_id
+
+        :Arguments:
+            user_id : int
+                User id
+            event_name : str
+                Any string representing an event 
+        """
+
         existing = models.User.all().filter("id =", int(user_id)).get()
         if not existing:
             raise tornado.web.HTTPError(400)

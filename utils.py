@@ -4,9 +4,12 @@ from datetime import datetime, timedelta
 def timedelta_wrapper(time, delta=0):
     """ This method is a wrapper for built in method timedelta() 
     since we don't know what the request argument time period.
-    Arguments:    
-    time is any of the following (minutes, hours, days, weeks) 
-    delta is any value supplied to timedelta() eg. timedelta(hours=3)
+
+    :Arguments:    
+    time:  str
+        Any of the following (minutes, hours, days, weeks) 
+    delta: int
+        Any value supplied to timedelta() eg. timedelta(hours=3)
     """
     # check if time period is None
     if not time:
@@ -49,7 +52,16 @@ def make_dict(date, event, count):
    
 
 def filter_by(time=None, events_list=[], epoch=None):
-    """ Filter event list by minutes, hours, days, weeks"""
+    """ Filter event list by minutes, hours, days, weeks.
+
+    :Arguments:    
+    time:  str
+        Any of the following (minutes, hours, days, weeks) 
+    events_list: list 
+        List of events 
+    epoch: Class datetime
+        Any datetime object that represent a datetime in the past
+    """
     list_of_list = []
     group_list = []
 
