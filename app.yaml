@@ -19,6 +19,10 @@ handlers:
 - url: /mapreduce(/.*)?
   script: mapreduce.main.APP
 
+handlers:
+- url: /mapreduce/pipeline/images
+  static_dir: mapreduce/lib/pipeline/ui/images
+
 - url: /.*
   script: main.application
 
