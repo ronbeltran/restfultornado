@@ -13,6 +13,7 @@ from google.appengine.ext import db
 
 import models
 import utils
+import precompute
 
 # initialize users and events 
 if models.User.all().count() == 0:
@@ -24,14 +25,16 @@ MAX_NUMBER_OF_EVENTS = 500
 class MainHandler(tornado.web.RequestHandler):
 
     def get(self):
-        """ Show list of users
-        """
-        start = timer.time()
-        data = {
-            "users": [u.to_dict() for u in models.User.all()],
-            "load_time": timer.time() - start
-        }
-        self.write(utils.json_encode(data))
+        err = {}
+        user_id = self.get_argument("user_id", None)
+        if not user_id:
+            err["message"] = "Please append query parameter /?user_id=<int>"
+            err["user_id"] = user_id 
+            self.write(utils.json_encode(err))
+        else:
+            pipeline = precompute.EventCountPipeline(user_id)
+            pipeline.start()
+            self.redirect(pipeline.base_path + "/status?root=" + pipeline.pipeline_id)
 
 
 class EventApiHandler(tornado.web.RequestHandler):
