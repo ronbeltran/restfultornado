@@ -16,11 +16,14 @@ handlers:
   static_files: robots.txt
   upload: robots.txt
 
+- url: /mapreduce/pipeline/images
+  static_dir: mapreduce/lib/pipeline/ui/images
+
+- url: /mapreduce(/.*)?
+  script: mapreduce.main.APP
+
 - url: /.*
   script: main.application
-
-includes:
-- mapreduce/include.yaml
 
 builtins:
 - remote_api: on
