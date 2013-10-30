@@ -62,6 +62,8 @@ def initialize_db():
     e111 = Event(user=buzz, name="e1", created=one_hour_ago)
     e111.put()
 
+    # ('e1', '1'), ('e1','1'),('e1','1') => ('e1',['1','1','1'])
+
     e2 = Event(user=buzz, name="e2", created=one_hour_ago)
     e2.put()
 
@@ -70,6 +72,8 @@ def initialize_db():
 
     e222 = Event(user=buzz, name="e2", created=two_hour_ago)
     e222.put()
+
+    # ('e2', '1'), ('e2','2'),('e2','2') => ('e2',['1','2','2'])
 
     e3 = Event(user=buzz, name="e3", created=five_hour_ago)
     e3.put()
@@ -80,6 +84,8 @@ def initialize_db():
     e333 = Event(user=buzz, name="e3", created=five_hour_ago)
     e333.put()
 
+    # ('e3', '5'), ('e3','5'),('e3','5') => ('e3',['5','5','5'])
+
     e4 = Event(user=buzz, name="e4", created=ten_hour_ago)
     e4.put()
 
@@ -88,6 +94,8 @@ def initialize_db():
 
     e444 = Event(user=buzz, name="e4", created=ten_hour_ago)
     e444.put()
+
+    # ('e4', '10'), ('e4','10'),('e4','10') => ('e4',['10','10','10'])
 
     e5 = Event(user=buzz, name="e5", created=two_hour_ago)
     e5.put()
@@ -98,14 +106,18 @@ def initialize_db():
     e555 = Event(user=buzz, name="e5", created=two_hour_ago)
     e555.put()
 
+    # ('e5', '2'), ('e5','2'),('e5','2') => ('e5',['5','5','5'])
+
     e6 = Event(user=buzz, name="e6", created=two_hour_ago)
     e6.put()
 
-    e66 = Event(user=buzz, name="e6", created=three_day_ago)
+    e66 = Event(user=buzz, name="e6", created=three_hour_ago)
     e66.put()
 
-    e666 = Event(user=buzz, name="e6", created=three_day_ago)
+    e666 = Event(user=buzz, name="e6", created=three_hour_ago)
     e666.put()
+
+    # ('e6', '2'), ('e6','3'),('e6','3') => ('e6',['2','3','3'])
 
     # For woody 
     woody = User(id=2)
