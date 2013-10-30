@@ -25,11 +25,13 @@ class Event(db.Model):
 class EventCount(db.Model):
     user = db.ReferenceProperty(User, collection_name='user_event_count')
     name = db.StringProperty(required=True)
+    time = db.StringProperty(required=True)
     count = db.IntegerProperty(default=0)
 
     def to_dict(self):
         return dict(user_id=int(self.user.id),
                     name=str(self.name),
+                    time=str(self.time),
                     count=str(self.count()))
 
 
