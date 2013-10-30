@@ -44,6 +44,7 @@ def initialize_db():
 
     one_hour_ago = datetime.now() - timedelta(minutes=1)
     two_hour_ago = datetime.now() - timedelta(minutes=2)
+    three_hour_ago = datetime.now() - timedelta(minutes=2)
     five_hour_ago = datetime.now() - timedelta(minutes=5)
     ten_hour_ago = datetime.now() - timedelta(minutes=10)
     fifteen_hour_ago = datetime.now() - timedelta(minutes=15)
