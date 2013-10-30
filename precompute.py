@@ -20,6 +20,7 @@ def events_hourly_map(event):
         # Yield events per hour grouping
         # eg. ('e1',1), ('e1',1), ('e2',2), ('e2',3)
         # ('e1',['1','1']), ('e2',['2','3'])
+        logging.debug('events_hourly_map(): yield (%s, %s)', event.name, str(event.created.hour))
         yield (event.name, str(event.created.hour) )
 
 
@@ -28,6 +29,7 @@ def events_count_reduce(key, values):
     # For ('e1',['1','1']) => ('e1',2) means two e1 event for the first hour.
     # For ('e2',['2','3']) => ('e2', 1), ('e2', 1) means one e2 event for second and third hours respectively.
     for i in set(values):
+        logging.debug('events_count_reduce(): yield (%s, %s)', key, str( values.count(i) ))
         yield ( key, str(values.count(i)) )
 
 
@@ -54,7 +56,7 @@ class EventCountPipeline(base_handler.PipelineBase):
 class StoreOutput(base_handler.PipelineBase):
 
     def run(self, mr_type, user_id, output):
-        logging.debug("output is %s", str(output))
+        logging.debug("output is %s", str(output[0]))
         user = models.User.all().filter("id =", int(user_id))
         if mr_type=="EventCount":
             logging.debug("mr_type is %s", str(mr_type))
