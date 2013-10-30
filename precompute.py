@@ -1,8 +1,6 @@
 import logging
 from datetime import datetime, timedelta
 
-from google.appengine.ext import blobstore
-
 from mapreduce import base_handler
 from mapreduce import context 
 from mapreduce import mapreduce_pipeline
@@ -58,10 +56,7 @@ class EventCountPipeline(base_handler.PipelineBase):
 class StoreOutput(base_handler.PipelineBase):
 
     def run(self, mr_type, user_id, output):
-        logging.debug("output is %s", str(output[0]))
-        blob_reader = blobstore.BlobReader(output[0])
-        value = blob_reader.read()
-        logging.debug("blobstore valus is %s", str(value) )
+        logging.debug("output is %s", str(output))
         user = models.User.all().filter("id =", int(user_id))
         if mr_type=="EventCount":
             logging.debug("mr_type is %s", str(mr_type))
