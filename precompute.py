@@ -28,9 +28,21 @@ def events_count_reduce(key, values):
     """Event count reduce function"""
     # For ('e1',['1','1']) => ('e1',2) means two e1 event for the first hour.
     # For ('e2',['2','3']) => ('e2', 1), ('e2', 1) means one e2 event for second and third hours respectively.
+    ctx = context.get()
+    params = ctx.mapreduce_spec.mapper.params
+
+    user_id = int(params['user_id'])
+    user=models.User.all().filter("id =", int(user_id)).get()
+    # (e1,[1,1,2]) => (e1,1,2), (e1,2,1) 
     for i in set(values):
-        logging.debug('events_count_reduce(): yield (%s, %s)', key, str( values.count(i) ))
-        yield ( key, str(values.count(i)) )
+        cntr = models.EventCount(user=user,
+                                 name=key,
+                                 time=str(i),
+                                 count=int(values.count(i))
+                                 )
+        cntr.put()
+        logging.debug('events_count_reduce(): yield (name=%s, time=%s, count=%s)', key, str(i), str( values.count(i) ))
+        yield op.db.Put(cntr)
 
 
 class EventCountPipeline(base_handler.PipelineBase):
@@ -48,9 +60,10 @@ class EventCountPipeline(base_handler.PipelineBase):
             },
             reducer_params={
                 "mime_type": "text/plain",
+                "user_id": str(user_id),
             },
             shards=20)
-        yield StoreOutput("EventCount", user_id, output)
+#        yield StoreOutput("EventCount", user_id, output)
 
 
 class StoreOutput(base_handler.PipelineBase):
