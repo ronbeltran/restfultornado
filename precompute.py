@@ -14,10 +14,9 @@ def events_hourly_map(event):
     ctx = context.get()
     params = ctx.mapreduce_spec.mapper.params
 
-    user_id = params['user_id']
-    user = models.User.all().filter("id =", int(user_id))
+    user_id = int(params['user_id'])
 
-    if event.user == user:
+    if int(event.user.id) == user_id:
         # Yield events per hour grouping
         # eg. ('e1',1), ('e1',1), ('e2',2), ('e2',3)
         # ('e1',['1','1']), ('e2',['2','3'])
