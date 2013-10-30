@@ -3,6 +3,12 @@ svn:wc:ra_dav:version-url
 V 54
 /svn/!svn/ver/519/trunk/python/src/mapreduce/operation
 END
+db.py
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/!svn/ver/519/trunk/python/src/mapreduce/operation/db.py
+END
 base.py
 K 25
 svn:wc:ra_dav:version-url
@@ -20,10 +26,4 @@ K 25
 svn:wc:ra_dav:version-url
 V 66
 /svn/!svn/ver/519/trunk/python/src/mapreduce/operation/counters.py
-END
-db.py
-K 25
-svn:wc:ra_dav:version-url
-V 60
-/svn/!svn/ver/519/trunk/python/src/mapreduce/operation/db.py
 END
